@@ -3,35 +3,36 @@ import { AppComponent } from '../app.component';
 import { LoginComponent } from '../login/login.component';
 import { HomeService } from '../home.service';
 import { ToasterServiceService } from '../services/toaster-service.service';
+import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {Observable, Subject, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged, filter, map} from 'rxjs/operators';
+
+
+// const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
+//   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
+//   'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
+//   'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
+//   'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+//   'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
+//   'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
+//   'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
-  weather:object  = {}
+export class HomeComponent implements OnInit { 
+  weather:object  = {} 
 
-  // mock: object = 
-  // {"elevation":"204.0",
-  // "locationId":"3660","latitude":"51.68",
-  // "longitude":"-0.802","name":"High Wycombe","county":"Buckinghamshire",
-  // "periods":[{
-  //   "timestamp":"2019-12-17T00:00:00Z",
-  //   "reading":{"temperature":"6","feelsGoodTemp":"4","humidity":"98","MaxUVIndex":"0","precipitationProb":"50","visibility":"MO",
-  //   "weatherType":"5","windDirection":"ENE","windGust":"7","windSpeed":"2"}},
-  //     {"timestamp":"2019-12-17T03:00:00Z",
-  //     "reading":{"temperature":"6","feelsGoodTemp":"3","humidity":"98","MaxUVIndex":"0","precipitationProb":"58","visibility":"MO","weatherType":"12","windDirection":"NNE","windGust":"7","windSpeed":"4"}},{"timestamp":"2019-12-17T06:00:00Z","reading":{"temperature":"5","feelsGoodTemp":"3","humidity":"98","MaxUVIndex":"0","precipitationProb":"57","visibility":"PO","weatherType":"12","windDirection":"NNE","windGust":"9","windSpeed":"4"}},
-  //     {"timestamp":"2019-12-17T09:00:00Z","reading":{"temperature":"5","feelsGoodTemp":"3","humidity":"98","MaxUVIndex":"1","precipitationProb":"45","visibility":"MO","weatherType":"12","windDirection":"NNW","windGust":"9","windSpeed":"4"}},{"timestamp":"2019-12-17T12:00:00Z","reading":{"temperature":"5","feelsGoodTemp":"3","humidity":"96","MaxUVIndex":"1","precipitationProb":"49","visibility":"PO","weatherType":"12","windDirection":"NW","windGust":"11","windSpeed":"4"}},{"timestamp":"2019-12-17T15:00:00Z","reading":{"temperature":"6","feelsGoodTemp":"3","humidity":"94","MaxUVIndex":"1","precipitationProb":"14","visibility":"GO","weatherType":"7","windDirection":"W","windGust":"9","windSpeed":"4"}},{"timestamp":"2019-12-17T18:00:00Z","reading":{"temperature":"4","feelsGoodTemp":"1","humidity":"97","MaxUVIndex":"0","precipitationProb":"12","visibility":"MO","weatherType":"7","windDirection":"SW","windGust":"11","windSpeed":"4"}},{"timestamp":"2019-12-17T21:00:00Z","reading":{"temperature":"4","feelsGoodTemp":"0","humidity":"96","MaxUVIndex":"0","precipitationProb":"5","visibility":"GO","weatherType":"2","windDirection":"SW","windGust":"13","windSpeed":"4"}}],"dataDate":"2019-12-16T13:00:00Z","country":"ENGLAND","summary":{"temp":5.125,"humidity":96.875,"windSpeed":3.75}}
-
-      // location = "Pembrey Sands"
   mapUrl = "https://maps.google.com/maps?q="+ this.weather["name"] +"&t=k&z=13&ie=UTF8&iwloc=&output=embed";
 
-  constructor(private service:HomeService, private toasterService: ToasterServiceService) { }
+  constructor(private service:HomeService, private toasterService: ToasterServiceService) {   }
 
   name:string;
   weatherStatus: string;
-  msg:string = "Raining @ " + name;
+  msg:string = "Raining @ " + name; 
 
   ngOnInit() {
     this.service.getData().subscribe(
@@ -45,7 +46,8 @@ export class HomeComponent implements OnInit {
           console.log("herreeee " + this.name); 
       },
       error => { console.log(error); }
-    );
+    ).unsubscribe;
+
     this.hide();
     LoginComponent.loggedIn;
     this.Info(this.msg);
@@ -56,10 +58,24 @@ export class HomeComponent implements OnInit {
   }
   Info(msg: string){
     this.toasterService.Info("Info", msg);
-  }
+  } 
 
-  // Success(){
-  //   this.toasterService.Success("title", "message");
+  // model: any;
+
+  // @ViewChild('instance', {static: true}) instance: NgbTypeahead;
+  // focus$ = new Subject<string>();
+  // click$ = new Subject<string>();
+
+  // search = (text$: Observable<string>) => {
+  //   const debouncedText$ = text$.pipe(debounceTime(200), distinctUntilChanged());
+  //   const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+  //   const inputFocus$ = this.focus$;
+
+  //   return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
+  //     map(term => (term === '' ? states
+  //       : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
+  //   );
   // }
-
+  
+  
 }

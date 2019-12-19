@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   loggedIn: boolean;
   static loggedIn: boolean;
   returnUrl: string;
+  
 
   constructor(private authService: AuthService, private route: ActivatedRoute,
    private router: Router) { }

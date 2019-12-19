@@ -7,14 +7,18 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { NgxTypeaheadModule } from 'ngx-typeahead';
-import{HttpClientModule} from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {HttpClientModule} from '@angular/common/http';
 import { HomeService } from './home.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatIconModule,
   MatButtonModule,
   MatCardModule } from '@angular/material';
+  /* Angular material */
+import { AngularMaterialModule } from './angular-material.module';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const config = new AuthServiceConfig([
   {
@@ -41,12 +45,16 @@ export function provideConfig() {
     AppRoutingModule,
     SocialLoginModule,
     BrowserAnimationsModule,
-    MatIconModule,
+    // MatIconModule,
     MatButtonModule,
     MatCardModule,
     HttpClientModule,
-    NgxTypeaheadModule
-  ],
+    NgbModule,
+    BrowserAnimationsModule,
+    AngularMaterialModule,
+    ReactiveFormsModule,
+    FormsModule
+  ], 
   providers: [
     HomeService,
     {
@@ -55,7 +63,8 @@ export function provideConfig() {
     },
     ToasterServiceService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, HomeComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
   
 })
 export class AppModule { }
